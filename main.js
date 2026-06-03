@@ -1,7 +1,6 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d"); 
 
-// パラメータの定義
 const PLAYER_SIZE = 40;
 const PLAYER_SPEED = 10;
 const ENEMY_SIZE = 40;
@@ -33,11 +32,11 @@ document.addEventListener("keydown", (event) => {
         restartGame();
     }
 });
-// 話すとfalse
+// 離すとfalse
 document.addEventListener("keyup", (event) => {
     keys[event.key.toLowerCase()] = false;
 });
-
+// playerの動き
 function updatePlayer(){
     if(keys["arrowleft"] || keys["a"]) player.x -= PLAYER_SPEED;
     if(keys["arrowright"] || keys["d"]) player.x += PLAYER_SPEED;
@@ -47,7 +46,7 @@ function updatePlayer(){
     player.x = Math.max(0, Math.min(canvas.width - player.size, player.x));
     player.y = Math.max(0, Math.min(canvas.height - player.size, player.y));
 }
-
+// enemy生成
 function createEnemy(){
     if(!gameRunning){
         return;
@@ -66,7 +65,7 @@ function createEnemy(){
 
     setTimeout(createEnemy, enemySpawnInterval);
 }
-
+// enemyの動き
 function updateEnemies(){
     // 後ろから回すことで処理前の要素のインデックスがずれない
     for(let i = enemies.length -1; i >= 0; i--){
@@ -81,7 +80,7 @@ function updateEnemies(){
         }
     }
 }
-
+// 衝突判定
 function checkCollision(player,enemy){
     return !(
         //　以下のいずれかの条件を満たせば衝突無し
@@ -91,7 +90,7 @@ function checkCollision(player,enemy){
         player.y >= enemy.y + enemy.size     // playerの上端とenemyの下端の判定
     );
 }
-
+// スコア更新
 function updateScore(){
     if(!gameRunning){
         return;
@@ -108,7 +107,7 @@ function updateScore(){
 
     setTimeout(updateScore, 1000);
 }
-
+// 描画更新
 function draw(){
     // 移動前の全オブジェクトを削除
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -138,7 +137,7 @@ function draw(){
         ctx.fillText("Press R to Restart", canvas.width/2 -100, canvas.height/2 + 40);
     }
 }
-
+// ゲームプレイ中のループ
 function gameLoop(){
     if (gameRunning){
         updatePlayer();
@@ -147,7 +146,7 @@ function gameLoop(){
     draw();
     requestAnimationFrame(gameLoop);
 }
-
+// ゲームオーバー
 function gameOver(){
     gameRunning = false;
 
@@ -156,7 +155,7 @@ function gameOver(){
         localStorage.setItem("highScore", highScore);
     }
 }
-
+// リスタート
 function restartGame() {
     enemies.length = 0;
     score = 0;
@@ -168,12 +167,10 @@ function restartGame() {
     createEnemy();
     updateScore();
 }
-
+// 画面領域変更時にリサイズ
 function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    //player.x = Math.min(player.x, canvas.width - player.size);
-    //player.y = Math.min(player.y, canvas.height - player.size);
 }
 
 createEnemy();
