@@ -21,7 +21,7 @@ window.addEventListener("resize", resizeCanvas);
 // プレイヤーオブジェクト
 const player = {
     x :canvas.width/2 - PLAYER_SIZE / 2,
-    y :canvas.height/2- PLAYER_SIZE / 2,
+    y :canvas.height/2 - PLAYER_SIZE / 2,
     size: PLAYER_SIZE
 };
 
@@ -159,10 +159,10 @@ function gameOver(){
 function restartGame() {
     enemies.length = 0;
     score = 0;
-    enemyBaseSpeed = 5;
-    enemySpawnInterval = 1000;
+    enemyBaseSpeed = 1;
+    enemySpawnInterval = 500;
     player.x = canvas.width/2 - PLAYER_SIZE/2;
-    player.y = canvas.height - 60;
+    player.y = canvas.height/2 - PLAYER_SIZE/2;
     gameRunning = true;
     createEnemy();
     updateScore();
